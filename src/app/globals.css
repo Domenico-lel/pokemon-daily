@@ -1,0 +1,147 @@
+/* Font imports must precede all other rules (CSS spec) — keep at the very top. */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap");
+
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------------------
+   Fonts — Satoshi (headings) via @font-face; Inter imported above. Robust
+   system fallbacks keep the app legible offline.
+--------------------------------------------------------------------------- */
+@font-face {
+  font-family: "Satoshi";
+  src: url("https://api.fontshare.com/v2/fonts/satoshi/fonts/satoshi-600.woff2")
+    format("woff2");
+  font-weight: 600;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Satoshi";
+  src: url("https://api.fontshare.com/v2/fonts/satoshi/fonts/satoshi-700.woff2")
+    format("woff2");
+  font-weight: 700;
+  font-display: swap;
+}
+
+/* ---------------------------------------------------------------------------
+   Design tokens — exposed to Tailwind v4 via @theme so utilities like
+   bg-primary, text-fg, rounded-card, shadow-md are generated automatically.
+--------------------------------------------------------------------------- */
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-display: "Satoshi", "Inter", ui-sans-serif, system-ui, sans-serif;
+
+  /* Brand palette (OKLCH) */
+  --color-primary: oklch(0.55 0.14 250);
+  --color-primary-fg: oklch(0.98 0.01 250);
+  --color-secondary: oklch(0.7 0.12 150);
+  --color-accent: oklch(0.8 0.18 45);
+
+  /* Rarity accents */
+  --color-common: oklch(0.72 0.02 260);
+  --color-uncommon: oklch(0.72 0.13 150);
+  --color-rare: oklch(0.62 0.15 250);
+  --color-epic: oklch(0.58 0.2 300);
+  --color-legendary: oklch(0.78 0.17 70);
+
+  /* Semantic surfaces — light defaults, overridden in .dark below */
+  --color-bg: oklch(0.98 0.008 260);
+  --color-surface: oklch(1 0 0);
+  --color-surface-2: oklch(0.96 0.01 260);
+  --color-border: oklch(0.9 0.01 260);
+  --color-fg: oklch(0.22 0.02 260);
+  --color-muted: oklch(0.5 0.02 260);
+  --color-ring: oklch(0.6 0.2 250);
+
+  /* Radii */
+  --radius-input: 4px;
+  --radius-card: 8px;
+  --radius-modal: 12px;
+
+  /* Spacing baseline (4px) available as size utilities */
+  --spacing: 4px;
+
+  /* Shadows — never pure black, hsl with opacity */
+  --shadow-sm: 0 2px 4px hsla(260, 5%, 0%, 0.07);
+  --shadow-md: 0 4px 12px hsla(260, 5%, 0%, 0.12);
+  --shadow-lg: 0 8px 24px hsla(260, 5%, 0%, 0.15);
+
+  /* Easing — spring soft */
+  --ease-soft: cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+/* Dark mode — toggled by `.dark` class on <html> */
+.dark {
+  --color-bg: oklch(0.19 0.015 260);
+  --color-surface: oklch(0.22 0.02 260);
+  --color-surface-2: oklch(0.26 0.025 260);
+  --color-border: oklch(0.32 0.02 260);
+  --color-fg: oklch(0.95 0.01 260);
+  --color-muted: oklch(0.7 0.02 260);
+  --color-ring: oklch(0.7 0.18 250);
+}
+
+/* Map `dark:` variant to the `.dark` class strategy */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ---------------------------------------------------------------------------
+   Base
+--------------------------------------------------------------------------- */
+* {
+  border-color: var(--color-border);
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-fg);
+  font-family: var(--font-sans);
+  letter-spacing: -0.01em;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+
+/* Accessible focus ring on keyboard nav */
+:focus-visible {
+  outline: 2px solid var(--color-ring);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Respect reduced motion at the platform level too */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Utility: subtle grid backdrop for the hero */
+.bg-grid {
+  background-image:
+    linear-gradient(to right, color-mix(in oklch, var(--color-border) 60%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in oklch, var(--color-border) 60%, transparent) 1px, transparent 1px);
+  background-size: 32px 32px;
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 40%, transparent 100%);
+}
+
+/* Hide scrollbar on the horizontally-swipeable gallery track */
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
