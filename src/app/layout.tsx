@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { Providers, themeScript } from "@/components/providers";
+import { Analytics } from "@vercel/analytics/next";
 
 export const metadata: Metadata = {
   title: "PetChronicles — Daily Pet Game",
@@ -22,6 +23,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body>
         <Providers>{children}</Providers>
+        <Analytics />
       </body>
     </html>
   );
